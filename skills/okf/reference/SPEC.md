@@ -3,6 +3,7 @@
   Source:  https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
   Commit:  ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a
   License: Apache-2.0 (c) Google LLC — included verbatim under its terms.
+           Full license text: ./APACHE-2.0.txt
   This is the canonical normative reference loaded by the okf skill.
 -->
 
