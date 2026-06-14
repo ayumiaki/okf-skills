@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Validate plugin & marketplace manifests
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          for f in (".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"):
+              with open(f) as fh:
+                  json.load(fh)
+              print(f"ok: {f}")
+          PY
+
+      - name: Validate example bundle (strict)
+        run: uv run scripts/okf_validate.py examples/sample-bundle --strict
+
+      - name: Self-test — a non-conformant bundle must fail
+        run: |
+          tmp="$(mktemp -d)"
+          printf 'no frontmatter\n' > "$tmp/bad.md"
+          if uv run scripts/okf_validate.py "$tmp"; then
+            echo "validator failed to reject a non-conformant bundle" >&2
+            exit 1
+          fi
+          echo "ok: non-conformant bundle correctly rejected"
