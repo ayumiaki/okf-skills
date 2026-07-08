@@ -17,16 +17,17 @@ Generate a self-contained HTML graph of the target bundle (default the project's
 `.okf/`). No backend, no install on the viewing side, no data leaves the page.
 
 ```bash
-uv run "${CLAUDE_SKILL_DIR}/scripts/okf_visualize.py" $ARGUMENTS
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+uv run "${SCRIPT_DIR}/okf_visualize.py" $ARGUMENTS
 ```
 
 If `uv` is unavailable:
 
 ```bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 python3 -m pip install --quiet pyyaml && \
-python3 "${CLAUDE_SKILL_DIR}/scripts/okf_visualize.py" $ARGUMENTS
+python3 "${SCRIPT_DIR}/okf_visualize.py" $ARGUMENTS
 ```
 
-The output defaults to `<bundle>/viz.html`. Pass `-o <path>` to write elsewhere.
-Open it in any browser; `${CLAUDE_SKILL_DIR}` resolves whether this runs as part
-of the `okf` plugin or as a standalone skills.sh skill.
+The script is self-locating using `$0`, so it works whether installed as a
+plugin, skills.sh skill, or manual copy to any agent's tools directory.

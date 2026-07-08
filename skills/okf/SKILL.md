@@ -90,11 +90,11 @@ location. Commit it alongside the code it describes — knowledge as code.
 ## Validation (do this before declaring done)
 
 Never eyeball conformance — run the deterministic checker. Invoke the companion
-**`validate`** skill (`/okf:validate <bundle-dir> --strict`), which ships the
-checker. If that skill is not installed, run it directly:
+**`validate`** skill, which ships the checker.
 
 ```bash
-uv run "${CLAUDE_SKILL_DIR}/../validate/scripts/okf_validate.py" <bundle-dir> --strict
+SCRIPT_DIR="$(cd "$(dirname "$0")/../validate/scripts" && pwd)"
+uv run "${SCRIPT_DIR}/okf_validate.py" <bundle-dir> --strict
 ```
 
 Resolve every `ERROR` (hard §9 failures). Warnings are soft; fix them when cheap,

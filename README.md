@@ -1,9 +1,10 @@
 <div align="center">
 
-# 📚 okf — the Open Knowledge Format toolkit for Claude Code
+# 📚 okf — the Open Knowledge Format toolkit for any coding agent
 
 **Teach your coding agent to author, maintain, validate, and *visualize* portable
-knowledge bundles — markdown your team and your agents both read.**
+knowledge bundles — markdown your team and your agents both read. Claude-native,
+but flat-install compatible with every major agent harness.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
 [![OKF spec](https://img.shields.io/badge/OKF-v0.1-6E56CF.svg)](skills/okf/reference/SPEC.md)
@@ -69,7 +70,8 @@ and an OKF bundle for *what the team knows* — shared, structured, and shippabl
 | `skills/validate/scripts/okf_validate.py` | Standalone, zero-config validator (`uv run`, PyYAML via PEP 723). |
 | `skills/visualize/scripts/okf_visualize.py` | Standalone bundle→`viz.html` renderer (Cytoscape + marked via CDN). |
 | `skills/okf/reference/SPEC.md` | The OKF v0.1 spec, vendored verbatim — the source of truth. |
-| `templates/CLAUDE-okf.md` | Snippet that turns on automatic consume/maintain in your project. |
+| `templates/CLAUDE-okf.md` | Claude adoption snippet. |
+| `templates/AGENT-SETUP.md` | Universal adoption snippet (Hermes, Codex, Cursor, etc). |
 | `examples/sample-bundle/` | The conformant bundle behind the [live demo](https://scaccogatto.github.io/okf-skills/) — code, data, decisions, runbooks, metrics. |
 
 ## Install
@@ -87,32 +89,35 @@ and an OKF bundle for *what the team knows* — shared, structured, and shippabl
 npx skills add scaccogatto/okf-skills            # installs the okf, validate & visualize skills
 ```
 
-**Local development** (no marketplace):
+**Flat install for any harness** (Hermes, Codex, Cursor, Windsurf, custom):
 
 ```shell
-claude --plugin-dir /path/to/okf-skills
+cp -r skills/<name> /path/to/your/agent/skills/
 ```
+
+See [INSTALL.md](INSTALL.md) for per-harness setup, including path config,
+agent config snippets (AGENT.md / CLAUDE.md / etc), and what changed from the
+Claude-only origin.
 
 Both layouts coexist in this single repo: `.claude-plugin/` makes it a plugin
 marketplace; `skills/<name>/SKILL.md` makes it skills.sh-discoverable. The scripts
-live inside their skills and are referenced via `${CLAUDE_SKILL_DIR}`, so they work
-identically in either install path.
+live inside their skills and are **self-locating** via `$0` / `__file__`, so they
+work identically in every install path — no `${CLAUDE_SKILL_DIR}` dependency.
 
 Requires [`uv`](https://docs.astral.sh/uv/) for the scripts (or `python3` + `pyyaml`).
 
 ## Use it
 
-**Capture knowledge** — ask Claude to "document the auth service in OKF", or run:
+**Produce a bundle** — ask your agent to "document the auth service in OKF", or run:
 
 ```shell
-/okf:okf produce .okf
+uv run skills/okf/scripts/okf_produce.py .okf   # if shipped
+# or invoke via your harness's skill system
 ```
 
 **Validate** before committing:
 
 ```shell
-/okf:validate .okf --strict
-# or directly:
 uv run skills/validate/scripts/okf_validate.py .okf --strict
 ```
 
@@ -120,8 +125,6 @@ uv run skills/validate/scripts/okf_validate.py .okf --strict
 browser ([live example](https://scaccogatto.github.io/okf-skills/)):
 
 ```shell
-/okf:visualize .okf
-# or directly, with a title and a back-link to your repo:
 uv run skills/visualize/scripts/okf_visualize.py .okf \
   -o viz.html --title "My project" --link "https://github.com/me/project"
 ```
@@ -129,10 +132,11 @@ uv run skills/visualize/scripts/okf_visualize.py .okf \
 Every concept gets a shareable deep link — open `viz.html#services/auth-api` and the
 graph loads with that concept already selected.
 
-**Turn on automatic upkeep (soft mode).** This plugin ships *no hooks* by design.
-To have Claude consult `.okf/` before tasks and write knowledge back after changes,
-paste [`templates/CLAUDE-okf.md`](templates/CLAUDE-okf.md) into your project's
-`CLAUDE.md` (or `~/.claude/CLAUDE.md` for all projects).
+**Turn on automatic upkeep (soft mode).** This repo ships *no hooks* by design.
+To have your agent consult `.okf/` before tasks and write knowledge back after changes,
+paste [`templates/AGENT-SETUP.md`](templates/AGENT-SETUP.md) into your project's
+agent config (CLAUDE.md, AGENTS.md, etc). Claude users can use the dedicated
+[`templates/CLAUDE-okf.md`](templates/CLAUDE-okf.md) instead.
 
 ## How a bundle looks
 
@@ -172,13 +176,15 @@ timestamp: 2026-06-14T10:00:00Z
 
 ```
 okf-skills/
-├── .claude-plugin/{plugin.json, marketplace.json}
+├── .claude-plugin/{plugin.json, marketplace.json}   # Claude Code plugin
 ├── skills/okf/{SKILL.md, reference/SPEC.md, templates/}
 ├── skills/validate/{SKILL.md, scripts/okf_validate.py}
 ├── skills/visualize/{SKILL.md, scripts/okf_visualize.py}
 ├── examples/sample-bundle/      # the live-demo bundle
 ├── docs/                        # GitHub Pages: the live interactive demo
-├── templates/CLAUDE-okf.md
+├── templates/CLAUDE-okf.md      # Claude adoption snippet
+├── templates/AGENT-SETUP.md     # universal adoption snippet
+├── INSTALL.md                   # per-harness install guide
 └── .github/workflows/ci.yml
 ```
 
@@ -194,4 +200,4 @@ every push.
   team, released under Apache-2.0. `skills/okf/reference/SPEC.md` is vendored
   verbatim from the [reference repository](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf)
   with attribution.
-- This plugin's own code and content: **MIT** © Marco Boffo ([@scaccogatto](https://github.com/scaccogatto)).
+- This plugin's own code and content: **MIT** © Marco Boffo ([@scaccogatto](https://github.com/scaccogatto)).This fork adds universal multi-harness support (flat install, self-locating scripts, agent-agnostic setup templates).
