@@ -18,6 +18,8 @@ described as an OKF bundle — the toolkit eating its own dog food. Render it wi
 
 * [okf_validate.py](components/validator.md) — the conformance checker.
 * [okf_visualize.py](components/visualizer.md) — the graph renderer.
+* [okf_forge.py](components/forge.md) — the bootstrap scaffolder.
+* [CI pipeline](components/ci-pipeline.md) — the quality gate workflow.
 
 # Reference
 
@@ -29,3 +31,4 @@ described as an OKF bundle — the toolkit eating its own dog food. Render it wi
 * [Ship no hooks — soft-mode upkeep](decisions/no-hooks.md)
 * [Self-contained skills via CLAUDE_SKILL_DIR](decisions/self-contained-skills.md)
 * [Prescriptive produce mode — structured bundles by architecture](decisions/prescriptive-bundles.md)
+* [CI quality gate — strict validation on push](decisions/ci-quality-gate.md)

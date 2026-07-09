@@ -33,9 +33,25 @@ RESERVED = {"index.md", "log.md"}
 # concepts describing abstract ideas, so flagging it produces false noise.
 RECOMMENDED = ("title", "description", "tags", "timestamp")
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+ISO_DATETIME = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$")
 FENCE = re.compile(r"^(```|~~~)")
 # markdown link target capture: [text](target) — ignores images ![...]
 LINK = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
+
+# Recognised OKF types from the prescriptive-bundles taxonomy
+# Code artifacts (layer-specific):
+CODE_TYPES = {
+    "Page", "Component", "Layout",       # ui/
+    "Controller", "Middleware", "DTO",    # api/
+    "Service", "Worker", "Handler", "GenericService",  # services/
+    "Model", "Migration", "Repository", "Schema", "Table",  # data/
+    "Deployment", "Pipeline", "Config", "Script",           # infra/
+}
+# Process artifacts (cross-cutting):
+PROCESS_TYPES = {"Runbook", "Process", "Metric", "ADR"}
+# General / meta-types from the spec and toolkit:
+GENERAL_TYPES = {"Reference", "Skill", "Tool", "Decision", "Example"}
+KNOWN_TYPES = CODE_TYPES | PROCESS_TYPES | GENERAL_TYPES
 
 
 @dataclass
@@ -67,7 +83,7 @@ def split_frontmatter(text: str) -> tuple[str | None, str]:
     return None, text  # unterminated block → treated as absent
 
 
-def check_concept(path: Path, rel: str, report: Report) -> None:
+def check_concept(path: Path, rel: str, report: Report, strict: bool = False) -> None:
     report.concepts += 1
     text = path.read_text(encoding="utf-8").lstrip("﻿")
     raw, _ = split_frontmatter(text)
@@ -85,9 +101,19 @@ def check_concept(path: Path, rel: str, report: Report) -> None:
     type_val = meta.get("type")
     if not (isinstance(type_val, str) and type_val.strip()):
         report.err(rel, "§9.2 missing or empty required `type` field")
+    elif strict and type_val not in KNOWN_TYPES:
+        report.warn(rel, f"unrecognised type `{type_val}` — not in the "
+                         f"known taxonomy; add to KNOWN_TYPES if intentional")
     for key in RECOMMENDED:
         if key not in meta:
             report.warn(rel, f"recommended field `{key}` is absent (§4.1)")
+    # Timestamp format check (strict only) — must be full ISO 8601, not just date
+    ts = meta.get("timestamp")
+    if strict and ts is not None:
+        if isinstance(ts, str) and ts.strip():
+            if not ISO_DATETIME.match(ts):
+                report.warn(rel, f"timestamp `{ts}` should use full ISO 8601 "
+                                 f"(YYYY-MM-DDTHH:MM:SSZ format, not bare date)")
 
 
 def check_index(path: Path, rel: str, is_root: bool, report: Report) -> None:
@@ -157,7 +183,7 @@ def check_links(bundle: Path, md_files: list[Path], report: Report) -> None:
                 report.warn(rel, f"cross-link target not found: `{target}` (tolerated under §5.3)")
 
 
-def validate(bundle: Path) -> Report:
+def validate(bundle: Path, strict: bool = False) -> Report:
     report = Report()
     md_files = sorted(p for p in bundle.rglob("*.md") if p.is_file())
     for path in md_files:
@@ -168,7 +194,7 @@ def validate(bundle: Path) -> Report:
         elif name == "log.md":
             check_log(path, rel, report)
         else:
-            check_concept(path, rel, report)
+            check_concept(path, rel, report, strict=strict)
     check_links(bundle, md_files, report)
     return report
 
@@ -184,7 +210,7 @@ def main() -> int:
         print(f"error: {args.bundle} is not a directory", file=sys.stderr)
         return 2
 
-    r = validate(args.bundle)
+    r = validate(args.bundle, strict=args.strict)
     conformant = not r.errors
     failed = bool(r.errors) or (args.strict and bool(r.warnings))
 

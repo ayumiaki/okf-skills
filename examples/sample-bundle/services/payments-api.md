@@ -12,7 +12,7 @@ timestamp: "2026-06-16T11:05:00Z"
 Wraps the third-party payment processor behind a stable internal contract. Called
 synchronously by the [Orders API](/services/orders-api.md) during checkout, it
 authenticates the caller through the [Auth API](/services/auth-api.md) and records
-every charge attempt in the [Orders database](/datasets/orders-db.md). Like the
+every charge attempt in the [Orders database](/data/orders-db.md). Like the
 rest of the platform it follows the
 [event-driven decision](/decisions/event-driven.md) for downstream notification.
 
@@ -33,4 +33,4 @@ single most important invariant in the service.
 # Operations
 
 When charge success rate drops, follow the
-[Payment failures runbook](/runbooks/payment-failures.md).
+[Payment failures runbook](/processes/payment-failures.md).

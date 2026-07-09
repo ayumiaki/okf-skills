@@ -4,3 +4,4 @@
 * [Ship no hooks — soft-mode upkeep](no-hooks.md)
 * [Self-contained skills via CLAUDE_SKILL_DIR](self-contained-skills.md)
 * [Prescriptive produce mode — structured bundles by architecture](prescriptive-bundles.md)
+* [CI quality gate — strict validation on push](ci-quality-gate.md)

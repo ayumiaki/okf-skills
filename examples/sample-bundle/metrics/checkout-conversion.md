@@ -26,5 +26,5 @@ the denominator is `checkout.started` events, the numerator is `order.paid`.
 
 A sudden drop usually means failed charges in
 [Payments API](/services/payments-api.md), not buyer behaviour — start with the
-[Payment failures runbook](/runbooks/payment-failures.md) before assuming a
+[Payment failures runbook](/processes/payment-failures.md) before assuming a
 funnel regression.

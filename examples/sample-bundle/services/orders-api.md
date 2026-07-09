@@ -12,7 +12,7 @@ timestamp: "2026-06-16T09:20:00Z"
 The heart of the storefront. Authenticates callers through the
 [Auth API](/services/auth-api.md), charges them through the
 [Payments API](/services/payments-api.md), and persists state to the
-[Orders database](/datasets/orders-db.md). It emits domain events rather than
+[Orders database](/data/orders-db.md). It emits domain events rather than
 calling downstream consumers directly — see the
 [event-driven decision](/decisions/event-driven.md).
 
@@ -28,7 +28,7 @@ calling downstream consumers directly — see the
 
 1. Verify the caller's token (`scope: orders:write`).
 2. Reserve stock and write a `pending` order to the
-   [Orders database](/datasets/orders-db.md).
+   [Orders database](/data/orders-db.md).
 3. Call [Payments API](/services/payments-api.md) `POST /charges`.
 4. On success, mark the order `paid` and publish `order.paid`.
 

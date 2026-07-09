@@ -3,7 +3,7 @@ type: Runbook
 title: Payment failures runbook
 description: Diagnose and mitigate a spike in declined or failed charges.
 tags: [oncall, payments, incident]
-timestamp: "2026-06-18T07:30:00Z"
+timestamp: "2026-07-09T00:00:00Z"
 ---
 
 # Trigger
@@ -16,7 +16,7 @@ for 5 minutes, or `order.failed` events spike.
 
 1. Check [Payments API](/services/payments-api.md) `/healthz` and processor
    status page — is this us or upstream?
-2. Tail charge attempts in the [Orders database](/datasets/orders-db.md):
+2. Tail charge attempts in the [Orders database](/data/orders-db.md):
    ```sql
    SELECT decline_code, count(*) FROM charges
    WHERE created_at > now() - interval '15 min' AND status = 'failed'

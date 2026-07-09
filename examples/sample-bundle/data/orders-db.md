@@ -1,10 +1,10 @@
 ---
-type: Schema
+type: Table
 title: Orders database
 description: Postgres schema of record for orders, line items, and charge attempts.
 resource: https://github.com/acme/storefront/tree/main/db/migrations
 tags: [postgres, schema, data]
-timestamp: "2026-06-17T08:00:00Z"
+timestamp: "2026-07-09T00:00:00Z"
 ---
 
 # Overview
