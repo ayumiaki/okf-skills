@@ -1,5 +1,5 @@
 ---
-name: visualize
+name: okf-visualize
 description: >-
   Render an Open Knowledge Format (OKF) bundle as a single self-contained,
   interactive HTML graph (viz.html) — concepts as nodes coloured/sized by type,

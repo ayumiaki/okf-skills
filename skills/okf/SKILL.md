@@ -336,7 +336,7 @@ Never eyeball conformance — run the deterministic checker. Invoke the companio
 **`validate`** skill, which ships the checker.
 
 ```bash
-SCRIPT_DIR="$(cd "$(dirname "$0")/../validate/scripts" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")/../okf-validate/scripts" && pwd)"
 uv run "${SCRIPT_DIR}/okf_validate.py" <bundle-dir> --strict
 ```
 

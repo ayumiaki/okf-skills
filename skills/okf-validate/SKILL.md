@@ -1,5 +1,5 @@
 ---
-name: validate
+name: okf-validate
 description: >-
   Check that an Open Knowledge Format (OKF) bundle is conformant with the v0.1
   spec (§9). Use when asked to validate, lint, or check an OKF bundle, or before
