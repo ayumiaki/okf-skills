@@ -340,17 +340,22 @@ def concept_frontmatter(artifact: Artifact, now: str) -> str:
     tag_str = ", ".join(tags)
 
     # Try to extract a real description from the source file
-    desc = extract_description(artifact.source_path)
-    if not desc:
+    raw = extract_description(artifact.source_path)
+    if not raw:
         # Fallback: derive from the rel_path
-        desc = f"The {artifact.type_label.lower()} `{artifact.rel_path}`."
+        raw = f"The {artifact.type_label.lower()} from {artifact.rel_path}"
+    # YAML-safe: escape double quotes and backslashes, then wrap in double quotes
+    desc = raw.replace("\\", "\\\\").replace('"', '\\"')
+    # Truncate and strip for clean single-line value
+    if len(desc) > 200:
+        desc = desc[:197] + "..."
 
     # Build the string without relying on textwrap.dedent
     parts = [
         "---",
         f"type: {artifact.type_label}",
         f"title: {artifact.title}",
-        f"description: {desc}",
+        f'description: "{desc}"',
         f"resource: {artifact.source_path}",
         f"tags: [{tag_str}]",
         f"timestamp: {now}",
