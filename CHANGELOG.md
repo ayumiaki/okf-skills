@@ -4,6 +4,20 @@ All notable changes to this toolkit are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this toolkit tracks the
 OKF spec version it supports.
 
+## [0.5.0] — 2026-07-09
+
+### Added
+- **Prescriptive multi-layer produce mode** – the `produce` mode in `skills/okf/SKILL.md` now enforces a structured bundle layout instead of the weak "choose a directory layout" guidance. Agents perform source tree analysis (Step 2), map source hierarchy to bundle paths (Step 3), and classify concepts using a defined type taxonomy (Step 4) that distinguishes code artifacts (Page, Controller, Table, Service) from process artifacts (Playbook, ADR, Process).
+- **Layer taxonomy** – fixed directory categories (`ui/`, `api/`, `services/`, `data/`, `infra/`, `processes/`, `decisions/`) with valid `type` values per layer, covering frontend, backend, database, and cross-cutting concerns.
+- **Source-to-bundle path mapping table** – 10 concrete examples showing how source files map to bundle paths, with rules for stripping framework prefixes and preserving meaningful hierarchy.
+- **Full-stack and database-only example bundle trees** in the SKILL.md and README.
+- **Anti-patterns table** documenting common flattening mistakes with before/after corrections.
+- `okf_forge.py` rewritten with `--layers` flag – scaffold only the layers your project needs (default: all). Each layer gets proper subdirectories, index files, and sample concepts. Run `--layers ui,api,data` for a full-stack project or `--layers data` for a database-only project.
+
+### Changed
+- README fully rewritten: dead demo links removed, consistent repo name (`okf-skills`), updated bundle examples to show multi-layer structure, fixed script path references, improved badges and CI link.
+- `okf_forge.py` hardens to accept `--layers` (comma-separated, defaults to all).
+
 ## [0.4.0] — 2026-07-09
 
 ### Added
