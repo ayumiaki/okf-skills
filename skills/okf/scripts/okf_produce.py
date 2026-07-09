@@ -97,10 +97,11 @@ LAYERS: list[LayerDef] = [
 
 # Default excluded directories / patterns
 EXCLUDE_DIRS = {
-    ".git", ".svn", "__pycache__", "node_modules", ".venv",
+    ".git", ".svn", "__pycache__", "node_modules", ".venv", "venv",
     ".hermes", ".claude", ".cursor", ".windsurf",
     "dist", "build", ".next", ".nuxt", "out", "target",
     "coverage", ".nyc_output", ".tox", ".eggs",
+    "site-packages",
 }
 
 EXCLUDE_FILES = {
@@ -231,6 +232,61 @@ def humanise(name: str) -> str:
     return " ".join(w.capitalize() for w in words if w).strip()
 
 
+def extract_description(file_path: str, limit: int = 2048) -> str:
+    """Read the first few bytes of a source file and extract a meaningful summary.
+
+    Returns a single-line description, or empty string if nothing useful is found.
+    """
+    try:
+        with open(file_path, "r", encoding="utf-8", errors="replace") as fh:
+            head = fh.read(limit)
+    except (OSError, IOError):
+        return ""
+
+    stem = Path(file_path).stem
+
+    # Python: module-level docstring (triple-quoted, after any encoding line)
+    if file_path.endswith(".py"):
+        text = head.lstrip("# -*- coding")
+        text = text.lstrip("# coding")
+        m = re.search(
+            r'(?:"""|\'\'\')\s*(.*?)\s*(?:"""|\'\'\')',
+            text, re.DOTALL
+        )
+        if m:
+            desc = m.group(1).strip().replace("\n", " ").replace("\r", "")
+            # Keep it short — first sentence only
+            if "." in desc:
+                desc = desc.split(".")[0] + "."
+            if len(desc) > 200:
+                desc = desc[:197] + "..."
+            return desc
+
+    # JS/TS: first JSDoc comment or leading comment block
+    if file_path.endswith((".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs")):
+        m = re.search(r'/\*\*\s*(.*?)\s*\*/', head, re.DOTALL)
+        if m:
+            desc = m.group(1).strip().replace("\n", " ").replace("\r", "")
+            desc = re.sub(r"^\s*\*\s*", "", desc, flags=re.MULTILINE)
+            if len(desc) > 200:
+                desc = desc[:197] + "..."
+            return desc
+
+    # Generic: first comment line that isn't shebang/copyright boilerplate
+    for line in head.splitlines()[:30]:
+        stripped = line.strip()
+        if stripped.startswith("#!/"):
+            continue
+        if stripped.startswith("// ") or stripped.startswith("# "):
+            content = stripped.lstrip("//# ").strip()
+            if content and len(content) > 5 and not content.startswith("Copyright"):
+                return content[:200]
+
+    # Last resort: a short sentence derived from the filename
+    return ""
+
+
+
 def discover_source(
     source_dir: Path,
     incremental: bool = False,
@@ -283,12 +339,18 @@ def concept_frontmatter(artifact: Artifact, now: str) -> str:
     tags = list(dict.fromkeys(tags))
     tag_str = ", ".join(tags)
 
+    # Try to extract a real description from the source file
+    desc = extract_description(artifact.source_path)
+    if not desc:
+        # Fallback: derive from the rel_path
+        desc = f"The {artifact.type_label.lower()} `{artifact.rel_path}`."
+
     # Build the string without relying on textwrap.dedent
     parts = [
         "---",
         f"type: {artifact.type_label}",
         f"title: {artifact.title}",
-        f"description: TODO -- describe the {artifact.layer} artifact `{artifact.rel_path}`.",
+        f"description: {desc}",
         f"resource: {artifact.source_path}",
         f"tags: [{tag_str}]",
         f"timestamp: {now}",
