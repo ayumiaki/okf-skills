@@ -7,6 +7,7 @@
   - Cursor:   AGENT.md
   - Custom:   whatever your harness loads at startup
 
+  Maintained by Ayumi Aki (@ayumiaki). Part of the Agent-Forge toolkit.
   This is what makes the soft-mode "consume / maintain" behavior happen —
   the skills ship no hooks, so this snippet is the trigger.
 -->

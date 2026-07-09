@@ -1,18 +1,19 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "scaccogatto",
-  "description": "Claude Code plugins by scaccogatto.",
+  "name": "ayumiaki",
+  "description": "Agent-Forge — agent-agnostic OKF toolkit by Ayumi Aki.",
   "owner": {
-    "name": "Marco Boffo",
-    "email": "chat@marcoboffo.me"
+    "name": "Ayumi Aki",
+    "email": "ayumi@powerbizconsulting.co.za",
+    "url": "https://github.com/ayumiaki"
   },
   "plugins": [
     {
       "name": "okf",
       "source": "./",
-      "description": "Author, maintain, and validate Open Knowledge Format (OKF) bundles.",
+      "description": "Author, maintain, validate, and visualize Open Knowledge Format (OKF) bundles.",
       "category": "documentation",
-      "keywords": ["okf", "knowledge", "markdown", "agents"],
+      "keywords": ["okf", "knowledge", "markdown", "agents", "hermes"],
       "license": "MIT"
     }
   ]

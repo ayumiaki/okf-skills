@@ -1,5 +1,9 @@
 <!--
-  OKF adoption snippet.
+  OKF adoption snippet for Claude Code (legacy).
+
+  Maintained by Ayumi Aki (@ayumiaki) as part of Agent-Forge.
+  For Hermes, Codex, Cursor, Windsurf, and custom harnesses, use
+  AGENT-SETUP.md instead.
 
   This file is NOT loaded automatically. Paste the block below into the CLAUDE.md
   of a project that adopts OKF (or into ~/.claude/CLAUDE.md to apply it globally).

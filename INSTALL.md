@@ -1,7 +1,7 @@
 # OKF Skills — Universal Install
 
 OKF skills are flat markdown + self-locating Python scripts. They drop into
-**any agent harness** that reads SKILL.md files and can run shell commands.
+**any agent harness** that reads `SKILL.md` files and can run shell commands.
 
 ## Skill layout
 
@@ -11,6 +11,7 @@ skills/
   validate/SKILL.md      # deterministic §9 conformance check
   visualize/SKILL.md     # render bundle -> self-contained viz.html
 scripts/                  # (inside each skill dir; referenced by SKILL.md)
+  okf_forge.py           # one-shot bundle scaffolder
   okf_validate.py
   okf_visualize.py
 templates/
@@ -27,8 +28,8 @@ templates/
 
 ### Claude Code
 
-1. `claude --plugin-dir /path/to/okf-skills` (local dev)
-2. Or: `/plugin marketplace add scaccogatto/okf-skills && /plugin install okf@scaccogatto`
+1. `claude --plugin-dir /path/to/agent-forge` (local dev)
+2. Or: `/plugin marketplace add ayumiaki/agent-forge && /plugin install okf@ayumiaki`
 3. Project local adoption: paste `templates/AGENT-SETUP.md` into `CLAUDE.md`
 
 ### Codex CLI
@@ -46,7 +47,7 @@ templates/
 ### Generic skill.sh install
 
 ```bash
-npx skills add scaccogatto/okf-skills
+npx skills add ayumiaki/agent-forge
 ```
 
 ## Requirements
@@ -58,11 +59,12 @@ The Python scripts are fully standalone: they resolve their own path via `__file
 and `$0`, so no environment variables, plugin manifests, or harness-specific
 config is needed.
 
-## What changed from the Claude-only version
+## What changed from the Claude-only origin
 
 - All `${CLAUDE_SKILL_DIR}` references replaced with self-locating `$0` / `__file__` logic
 - `templates/CLAUDE-okf.md` retained for Claude users; `templates/AGENT-SETUP.md`
-  added as the universal variant
+  is now the universal default
 - No harness-specific code in the Python scripts — they work identically everywhere
-- `.claude-plugin/` retained alongside as a first-class install option but is no
-  longer required
+- `.claude-plugin/` retained as a legacy install option but is no longer required
+- Added `okf_forge.py` bundle bootstrap script
+- Hermes-first install paths documented and verified

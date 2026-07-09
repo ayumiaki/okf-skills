@@ -2,7 +2,7 @@
 type: Skill
 title: okf skill
 description: Produce, maintain, and consume OKF bundles, driven by the verbatim v0.1 spec.
-resource: https://github.com/scaccogatto/okf-skills/blob/main/skills/okf/SKILL.md
+resource: https://github.com/ayumiaki/agent-forge/blob/main/skills/okf/SKILL.md
 tags: [skill, produce, maintain, consume]
 timestamp: "2026-06-28T00:00:00Z"
 ---

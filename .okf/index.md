@@ -4,9 +4,9 @@ okf_version: "0.1"
 
 # okf-skills — documented in its own format
 
-This is the [okf-skills](https://github.com/scaccogatto/okf-skills) repository
+This is the [Agent-Forge](https://github.com/ayumiaki/agent-forge) repository
 described as an OKF bundle — the toolkit eating its own dog food. Render it with
-`/okf:visualize .okf` (or see the [live graph](https://scaccogatto.github.io/okf-skills/self.html)).
+`/okf:visualize .okf` (or see the [live graph](https://ayumiaki.github.io/agent-forge/self.html)).
 
 # Skills
 

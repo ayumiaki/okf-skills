@@ -2,7 +2,7 @@
 type: Tool
 title: okf_validate.py
 description: Zero-config Python conformance checker (PEP 723 / uv, PyYAML).
-resource: https://github.com/scaccogatto/okf-skills/blob/main/skills/validate/scripts/okf_validate.py
+resource: https://github.com/ayumiaki/agent-forge/blob/main/skills/validate/scripts/okf_validate.py
 tags: [python, validator, uv]
 timestamp: "2026-06-28T00:00:00Z"
 ---

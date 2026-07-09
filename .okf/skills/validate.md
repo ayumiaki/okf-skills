@@ -2,7 +2,7 @@
 type: Skill
 title: validate skill
 description: Deterministic §9 conformance check for an OKF bundle — not an eyeball pass.
-resource: https://github.com/scaccogatto/okf-skills/blob/main/skills/validate/SKILL.md
+resource: https://github.com/ayumiaki/agent-forge/blob/main/skills/validate/SKILL.md
 tags: [skill, validation, ci]
 timestamp: "2026-06-28T00:00:00Z"
 ---

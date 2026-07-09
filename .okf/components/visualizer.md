@@ -2,7 +2,7 @@
 type: Tool
 title: okf_visualize.py
 description: Standalone bundle→viz.html renderer (Cytoscape + marked via CDN).
-resource: https://github.com/scaccogatto/okf-skills/blob/main/skills/visualize/scripts/okf_visualize.py
+resource: https://github.com/ayumiaki/agent-forge/blob/main/skills/visualize/scripts/okf_visualize.py
 tags: [python, visualization, cytoscape]
 timestamp: "2026-06-28T00:00:00Z"
 ---

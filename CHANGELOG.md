@@ -1,8 +1,20 @@
 # Changelog
 
-All notable changes to this plugin are documented here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this plugin tracks the
+All notable changes to this toolkit are documented here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this toolkit tracks the
 OKF spec version it supports.
+
+## [0.4.0] — 2026-07-09
+
+### Added
+- **Agent-Forge rebrand** – fully agent-agnostic identity; Hermes-first install paths, universal AGENTS.md / CLAUDE.md setup, no Claude-first assumption anywhere in the README or docs.
+- `scripts/okf_forge.py` — one-shot bootstrap: scaffold a new `.okf/` bundle in any project with spec-compliant skeleton, index, log, and sample concept files.
+- Hermes-native skill paths in `INSTALL.md` and README.
+
+### Changed
+- README rewritten in Ayumi's voice: agent-agnostic framing, multi-harness positioning, Hermes as first-class harness.
+- Credits/License section updated: Ayumi Aki (`@ayumiaki`) as maintainer; upstream spec attribution retained.
+- All CI, template, and internal `.okf/` doc references updated to point to `ayumiaki/agent-forge` or stripped of upstream branding.
 
 ## [0.3.4] — 2026-07-06
 
@@ -98,5 +110,5 @@ OKF spec version it supports.
   (upstream `ee67a5c`, Apache-2.0).
 - `templates/CLAUDE-okf.md`: adoption snippet enabling soft-mode consume/maintain.
 - `examples/sample-bundle/`: a conformant reference bundle.
-- One-plugin marketplace manifest for `/plugin marketplace add scaccogatto/okf-skills`.
+- One-plugin marketplace manifest for `/plugin marketplace add ayumiaki/agent-forge`.
 - CI: validates the plugin manifest and the example bundle on every push.
